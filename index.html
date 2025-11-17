@@ -4,20 +4,61 @@
 <meta charset="UTF-8">
 <title>Dice Roller & Wheel Spinner</title>
 <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    .section { margin-bottom: 40px; }
-    .result-box { 
-        font-size: 40px; 
-        margin-top: 15px; 
-        padding: 10px; 
-        border: 2px solid #000; 
-        display: inline-block; 
-        width: 120px; 
-        text-align: center; 
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: linear-gradient(180deg, #020617, #0a1a3d);
+        color: #c8d7ff;
     }
+
+    h2 {
+        color: #8ab4ff;
+    }
+
+    input, button {
+        background-color: #0d1b33;
+        border: 1px solid #233a63;
+        color: #c8d7ff;
+        padding: 6px 10px;
+        border-radius: 5px;
+    }
+
+    button {
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background-color: #132b52;
+    }
+
+    .section {
+        margin-bottom: 50px;
+        padding: 20px;
+        background-color: rgba(10, 20, 45, 0.5);
+        border-radius: 10px;
+        border: 1px solid #1f3261;
+        box-shadow: 0 0 10px #12274f88;
+    }
+
+    .result-box {
+        font-size: 60px;
+        margin-top: 20px;
+        padding: 15px;
+        border: 2px solid #4b6cbf;
+        display: inline-block;
+        width: 150px;
+        text-align: center;
+        color: #9cc4ff;
+        background-color: #0a1224;
+        border-radius: 10px;
+        box-shadow: 0 0 20px #2854a877 inset;
+    }
+
     .dice-container div {
         font-size: 24px;
         padding: 5px;
+        color: #b7c8ff;
     }
 </style>
 </head>
@@ -55,7 +96,7 @@
 </div>
 
 <script>
-/* ----------------------- WHEEL SPINNER ----------------------- */
+/* ----------------------- WHEEL SPINNER WITH RANDOMNESS ----------------------- */
 
 let spinInterval = null;
 
@@ -75,12 +116,18 @@ function spinWheel() {
     // Clear if already spinning
     if (spinInterval) clearInterval(spinInterval);
 
-    // Speed of counting
     spinInterval = setInterval(() => {
+        // NORMAL COUNT UP
         current++;
         if (current > upper) current = lower;
+
+        // RANDOM GLITCH JUMP — 6% chance each tick
+        if (Math.random() < 0.06) {
+            current = Math.floor(Math.random() * (upper - lower + 1)) + lower;
+        }
+
         wheelResult.textContent = current;
-    }, 30); // Fast count speed
+    }, 40); // slightly slower to appreciate the randomness
 
     // Random 3–5 seconds spin duration
     const stopTime = Math.random() * 2000 + 3000;
@@ -88,7 +135,6 @@ function spinWheel() {
     setTimeout(() => {
         clearInterval(spinInterval);
         spinInterval = null;
-        // Final number stays displayed until next spin
     }, stopTime);
 }
 
